@@ -2,20 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer components {
+  input,
+  label {
+    @apply block;
   }
-}
+  label {
+    @apply mb-2;
+  }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  input {
+    @apply w-full p-3 border border-gray-200 rounded-lg mb-4 focus:outline-none focus:border-gray-400;
+  }
+
+  button {
+    @apply p-4 bg-blue-600 rounded-lg mb-4 w-full text-white font-medium text-sm;
+  }
 }
