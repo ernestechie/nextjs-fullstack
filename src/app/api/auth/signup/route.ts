@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     const errorMessage =
       err instanceof Error ? err.message : 'Unexpected error occured!';
-    console.log('SIGNUP Error ->');
+    console.log('SIGNUP Error ->', err);
 
     return NextResponse.json(
       { status: false, message: errorMessage },

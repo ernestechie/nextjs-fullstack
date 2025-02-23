@@ -34,7 +34,7 @@ export default function SignUpPage() {
       setUser({ email: '', password: '', username: '' });
 
       toast.success('Account Created Successfully!');
-      router.push('/app');
+      router.push('/login');
     } catch (err) {
       console.log(err);
       throwAxiosError(err);

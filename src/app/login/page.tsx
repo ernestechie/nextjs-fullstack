@@ -1,9 +1,11 @@
 'use client';
 
+import { throwAxiosError } from '@/helpers/toast';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
+import toast from 'react-hot-toast';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -12,21 +14,33 @@ export default function LoginPage() {
 
   const { email, password } = user;
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setUser((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    //
     try {
+      setIsLoading(true);
+
+      // Call signup endpoint
+      const response = await axios.post('/api/auth/login', user);
+      if (!response.status) console.error('Response -> ', response);
+
+      const apiData = await response.data;
+
+      console.log('Data -> ', apiData);
+
+      setUser({ email: '', password: '' });
+
+      toast.success('Login Successful!');
+      router.push('/app');
     } catch (err) {
-      console.log('Error -> ', err);
+      console.log(err);
+      throwAxiosError(err);
     } finally {
+      setIsLoading(false);
     }
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    console.log('Payload -> ', user);
   };
 
   return (
@@ -55,8 +69,9 @@ export default function LoginPage() {
               onChange={handleInputChange}
             />
           </div>
-          <button type="submit">Submit</button>
-
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? 'Loading...' : 'Submit'}
+          </button>
           <div className="mt-4 flex items-center justify-end gap-2">
             <span>Don`t have an account?</span>
             <Link href="/signup" className="font-medium text-blue-700">
