@@ -16,6 +16,6 @@
   }
 
   button {
-    @apply p-4 bg-blue-600 rounded-lg mb-4 w-full text-white font-medium text-sm;
+    @apply p-4 bg-blue-600 rounded-lg mb-4 w-full text-white font-medium text-sm disabled:bg-gray-400;
   }
 }

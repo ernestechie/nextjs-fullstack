@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 
 const mongo_url = process.env.MONGO_URL!;
 
+/**
+ * Function to initialize the mongoose instance.
+ * This function is to be called in every route.
+ */
 export const connect = async () => {
   try {
     mongoose.connect(mongo_url);
