@@ -10,7 +10,7 @@ export const connect = async () => {
   try {
     mongoose.connect(mongo_url);
 
-    const connection = mongoose.connection;
+    const connection = mongoose.connection.setMaxListeners(16);
     connection.on('connected', () => {
       console.log(`MongoDB Connected Successfully!`);
     });
