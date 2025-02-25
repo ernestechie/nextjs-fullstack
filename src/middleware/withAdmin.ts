@@ -3,14 +3,15 @@
 import { jwtDecode } from "jwt-decode";
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { MiddlewareFactory } from "./stackHandler";
+import validatePath from "./validatePath";
 
-const adminRoutes = ["/app/admin"];
+const routes = ["/app/admin"];
 
 export const withAdmin: MiddlewareFactory = (next) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {
     const pathname = request.nextUrl.pathname;
 
-    if (adminRoutes.some((path) => pathname.startsWith(path))) {
+    if (validatePath({ routes, pathname })) {
       const token = request.cookies.get("nextjs-fs-token");
 
       let url: any = null;

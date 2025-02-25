@@ -2,20 +2,16 @@ import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { MiddlewareFactory } from "./stackHandler";
 import validatePath from "./validatePath";
 
-// function getSearchParam(param: string, url: any) {
-//   return url.searchParams.get(param);
-// }
+const routes = ["/login", "/signup"];
 
-const routes = ["/app"];
-
-export const withUser: MiddlewareFactory = (next) => {
+export const withPublicPath: MiddlewareFactory = (next) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {
     const pathname = request.nextUrl.pathname;
 
     if (validatePath({ routes, pathname })) {
       const userId = request.cookies.get("nextjs-fs-token");
-      if (!userId) {
-        const url = new URL(`/login`, request.url);
+      if (userId) {
+        const url = new URL(`/app`, request.url);
         return NextResponse.redirect(url);
       }
     }
