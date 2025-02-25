@@ -1,7 +1,7 @@
 import { stackMiddlewares } from "./middleware/stackHandler";
 import { withAdmin } from "./middleware/withAdmin";
-import { withPublicPath } from "./middleware/withPublicRoute";
+import { withPublic } from "./middleware/withPublic";
 import { withUser } from "./middleware/withUser";
 
-const middlewares = [withPublicPath, withUser, withAdmin];
+const middlewares = [withPublic, withUser, withAdmin];
 export default stackMiddlewares(middlewares);

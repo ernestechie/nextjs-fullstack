@@ -4,7 +4,7 @@ import validatePath from "./validatePath";
 
 const routes = ["/login", "/signup"];
 
-export const withPublicPath: MiddlewareFactory = (next) => {
+export const withPublic: MiddlewareFactory = (next) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {
     const pathname = request.nextUrl.pathname;
 
