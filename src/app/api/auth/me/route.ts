@@ -1,0 +1,37 @@
+import getTokenData from "@/helpers/getTokenData";
+import UserModel from "@/models/UserModel";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(request: NextRequest) {
+  try {
+    const userId = await getTokenData(request);
+
+    const user = UserModel.findById(userId);
+
+    if (!user)
+      return NextResponse.json(
+        {
+          message: "Unauthorized",
+          data: null,
+        },
+        { status: 401 }
+      );
+
+    return NextResponse.json(
+      {
+        message: "",
+        data: { user },
+      },
+      { status: 200 }
+    );
+  } catch (err) {
+    const errorMessage =
+      err instanceof Error ? err.message : "Unexpected error occured!";
+    console.log("AUTH_ME Error ->", err);
+
+    return NextResponse.json(
+      { status: false, message: errorMessage },
+      { status: 400 }
+    );
+  }
+}

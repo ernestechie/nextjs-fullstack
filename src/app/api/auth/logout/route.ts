@@ -17,7 +17,7 @@ export async function GET() {
   } catch (err) {
     const errorMessage =
       err instanceof Error ? err.message : "Unexpected error occured!";
-    console.log("SIGNUP Error ->", err);
+    console.log("AUTH_LOGOUT Error ->", err);
 
     return NextResponse.json(
       { status: false, message: errorMessage },

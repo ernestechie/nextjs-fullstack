@@ -9,8 +9,8 @@ export const withPublic: MiddlewareFactory = (next) => {
     const pathname = request.nextUrl.pathname;
 
     if (validatePath({ routes, pathname })) {
-      const userId = request.cookies.get("nextjs-fs-token");
-      if (userId) {
+      const token = request.cookies.get("nextjs-fs-token");
+      if (token) {
         const url = new URL(`/app`, request.url);
         return NextResponse.redirect(url);
       }

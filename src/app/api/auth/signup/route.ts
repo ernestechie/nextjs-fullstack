@@ -1,8 +1,8 @@
-import { connect } from '@/db/db.config';
-import UserModel from '@/models/UserModel';
+import { connect } from "@/db/db.config";
+import UserModel from "@/models/UserModel";
 
-import bcryptjs from 'bcryptjs';
-import { NextRequest, NextResponse } from 'next/server';
+import bcryptjs from "bcryptjs";
+import { NextRequest, NextResponse } from "next/server";
 
 connect();
 export async function POST(req: NextRequest) {
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const userExists = await UserModel.findOne({ email });
     if (userExists)
       return NextResponse.json(
-        { status: false, message: 'Email has already been used' },
+        { status: false, message: "Email has already been used" },
         { status: 400 }
       );
 
@@ -33,15 +33,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         status: true,
-        message: 'Account created successfully!',
+        message: "Account created successfully!",
         data: { user },
       },
       { status: 201 }
     );
   } catch (err) {
     const errorMessage =
-      err instanceof Error ? err.message : 'Unexpected error occured!';
-    console.log('SIGNUP Error ->', err);
+      err instanceof Error ? err.message : "Unexpected error occured!";
+    console.log("AUTH_SIGNUP Error ->", err);
 
     return NextResponse.json(
       { status: false, message: errorMessage },
