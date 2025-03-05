@@ -5,8 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   try {
     const userId = await getTokenData(request);
-
-    const user = UserModel.findById(userId);
+    const user = await UserModel.findById(userId).select("-password -__v");
 
     if (!user)
       return NextResponse.json(

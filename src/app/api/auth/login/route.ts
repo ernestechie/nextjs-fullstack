@@ -1,3 +1,4 @@
+import { NEXT_COOKIE_KEY } from "@/contants/enum";
 import { connect } from "@/db/db.config";
 import UserModel from "@/models/UserModel";
 
@@ -55,7 +56,7 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
 
-    response.cookies.set("nextjs-fs-token", token, {
+    response.cookies.set(NEXT_COOKIE_KEY, token, {
       httpOnly: true,
       path: "/",
     });

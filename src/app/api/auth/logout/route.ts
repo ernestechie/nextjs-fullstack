@@ -1,3 +1,4 @@
+import { NEXT_COOKIE_KEY } from "@/contants/enum";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -7,7 +8,7 @@ export async function GET() {
       message: "Logout Successful",
     });
 
-    response.cookies.set("nextjs-fs-token", "", {
+    response.cookies.set(NEXT_COOKIE_KEY, "", {
       httpOnly: true,
       path: "/",
       expires: new Date(0),

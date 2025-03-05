@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { throwAxiosError } from '@/helpers/toast';
-import axios from 'axios';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
-import toast from 'react-hot-toast';
+import { throwAxiosError } from "@/helpers/toast";
+import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState({ email: '', password: '' });
+  const [user, setUser] = useState({ email: "", password: "" });
 
   const { email, password } = user;
 
@@ -24,17 +24,13 @@ export default function LoginPage() {
       setIsLoading(true);
 
       // Call signup endpoint
-      const response = await axios.post('/api/auth/login', user);
-      if (!response.status) console.error('Response -> ', response);
+      const response = await axios.post("/api/auth/login", user);
+      if (!response.status) console.error("Response -> ", response);
 
-      const apiData = await response.data;
+      setUser({ email: "", password: "" });
 
-      console.log('Data -> ', apiData);
-
-      setUser({ email: '', password: '' });
-
-      toast.success('Login Successful!');
-      router.push('/app');
+      toast.success("Login Successful!");
+      router.push("/app");
     } catch (err) {
       console.log(err);
       throwAxiosError(err);
@@ -70,7 +66,7 @@ export default function LoginPage() {
             />
           </div>
           <button type="submit" disabled={isLoading}>
-            {isLoading ? 'Loading...' : 'Submit'}
+            {isLoading ? "Loading..." : "Submit"}
           </button>
           <div className="mt-4 flex items-center justify-end gap-2">
             <span>Don`t have an account?</span>

@@ -1,4 +1,4 @@
-export default function validatePath({
+export default function validateRoute({
   routes,
   pathname,
 }: {

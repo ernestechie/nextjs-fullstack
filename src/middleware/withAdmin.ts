@@ -1,25 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { jwtDecode } from "jwt-decode";
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { MiddlewareFactory } from "./stackHandler";
-import validatePath from "./validatePath";
+
+import { NEXT_COOKIE_KEY } from "@/contants/enum";
+import validateRoute from "./validatePath";
 
 const routes = ["/app/admin"];
 
 export const withAdmin: MiddlewareFactory = (next) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {
     const pathname = request.nextUrl.pathname;
+    const correctRoute = validateRoute({ routes, pathname });
 
-    if (validatePath({ routes, pathname })) {
-      const token = request.cookies.get("nextjs-fs-token");
+    if (correctRoute) {
+      const token = request.cookies.get(NEXT_COOKIE_KEY);
 
       let url: any = null;
       if (!token) {
         url = new URL(`/login`, request.url);
       } else {
         const user: any = jwtDecode(token.value);
-        console.log("User  -> ", user);
 
         if (!user) url = new URL(`/login`, request.url);
         else if (user && !user.isAdmin) {

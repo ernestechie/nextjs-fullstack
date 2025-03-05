@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { throwAxiosError } from '@/helpers/toast';
-import axios from 'axios';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
-import toast from 'react-hot-toast';
+import { throwAxiosError } from "@/helpers/toast";
+import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function SignUpPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState({ email: '', password: '', username: '' });
+  const [user, setUser] = useState({ email: "", password: "", username: "" });
 
   const { email, username, password } = user;
 
@@ -24,17 +24,13 @@ export default function SignUpPage() {
       setIsLoading(true);
 
       // Call signup endpoint
-      const response = await axios.post('/api/auth/signup', user);
-      if (!response.status) console.error('Response -> ', response);
+      const response = await axios.post("/api/auth/signup", user);
+      if (!response.status) console.error("Response -> ", response);
 
-      const apiData = await response.data;
+      setUser({ email: "", password: "", username: "" });
 
-      console.log('Data -> ', apiData);
-
-      setUser({ email: '', password: '', username: '' });
-
-      toast.success('Account Created Successfully!');
-      router.push('/login');
+      toast.success("Account Created Successfully!");
+      router.push("/login");
     } catch (err) {
       console.log(err);
       throwAxiosError(err);
@@ -80,7 +76,7 @@ export default function SignUpPage() {
             />
           </div>
           <button type="submit" disabled={isLoading}>
-            {isLoading ? 'Loading...' : 'Submit'}
+            {isLoading ? "Loading..." : "Submit"}
           </button>
 
           <div className="mt-4 flex items-center justify-end gap-2">
