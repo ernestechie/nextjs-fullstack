@@ -7,12 +7,12 @@ import { useRouter } from "next/navigation";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 
-export default function LoginPage() {
+export default function ResetPasswordPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState({ email: "", password: "" });
+  const [user, setUser] = useState({ passwordConfirm: "", password: "" });
 
-  const { email, password } = user;
+  const { passwordConfirm, password } = user;
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) =>
     setUser((prev) => ({ ...prev, [e.target.id]: e.target.value }));
@@ -23,14 +23,9 @@ export default function LoginPage() {
     try {
       setIsLoading(true);
 
-      // Call signup endpoint
-      const response = await axios.post("/api/auth/login", user);
-      if (!response.status) console.error("Response -> ", response);
+      // Call reset-passwprd endpoint
 
-      setUser({ email: "", password: "" });
-
-      toast.success("Login Successful!");
-      router.push("/app");
+      toast.success("Password Reset Successful!");
     } catch (err) {
       console.log(err);
       throwAxiosError(err);
@@ -42,19 +37,9 @@ export default function LoginPage() {
   return (
     <section className="p-2 py-16 min-h-screen">
       <div className="flex flex-col items-center justify-center w-full max-w-sm mx-auto">
-        <h1 className="mb-4 font-bold text-xl">Login</h1>
+        <h1 className="mb-4 font-bold text-xl">Reset Password</h1>
         <hr />
         <form className="w-full" onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={handleInputChange}
-            />
-          </div>
           <div>
             <label htmlFor="password">Password</label>
             <input
@@ -62,6 +47,16 @@ export default function LoginPage() {
               id="password"
               name="password"
               value={password}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="passwordConfirm">Confirm Password</label>
+            <input
+              type="password"
+              id="passwordConfirm"
+              name="passwordConfirm"
+              value={passwordConfirm}
               onChange={handleInputChange}
             />
           </div>

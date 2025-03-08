@@ -1,8 +1,10 @@
-import { connect } from '@/db/db.config';
-import UserModel from '@/models/UserModel';
+import { NEXT_COOKIE_KEY } from "@/constants/auth";
+import { connect } from "@/db/db.config";
+import UserModel from "@/models/UserModel";
 
-import bcryptjs from 'bcryptjs';
-import { NextRequest, NextResponse } from 'next/server';
+import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { NextRequest, NextResponse } from "next/server";
 
 connect();
 export async function POST(req: NextRequest) {
@@ -14,7 +16,7 @@ export async function POST(req: NextRequest) {
     const existingUser = await UserModel.findOne({ email });
     if (!existingUser)
       return NextResponse.json(
-        { status: false, message: 'Invalid email or password' },
+        { status: false, message: "Invalid email or password" },
         { status: 401 }
       );
 
@@ -24,26 +26,46 @@ export async function POST(req: NextRequest) {
       existingUser.password
     );
 
-    console.log({ email, password, passwordIsValid });
+    // 3. Create a token data
+    const tokenData = {
+      id: existingUser._id,
+      email: existingUser.email,
+      username: existingUser.username,
+      isAdmin: existingUser.isAdmin,
+    };
+
+    const jwt_secret = process.env.TOKEN_SECRET!;
+
+    // 4. Create jwt token
+    const token = await jwt.sign(tokenData, jwt_secret, {
+      expiresIn: "1d",
+    });
 
     if (!passwordIsValid)
       return NextResponse.json(
-        { status: false, message: 'Invalid email or password' },
+        { status: false, message: "Invalid email or password" },
         { status: 401 }
       );
 
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
         status: true,
-        message: 'Login Successfully',
-        data: { user: existingUser },
+        message: "Login Successful",
+        data: { user: tokenData, token },
       },
       { status: 200 }
     );
+
+    response.cookies.set(NEXT_COOKIE_KEY, token, {
+      httpOnly: true,
+      path: "/",
+    });
+
+    return response;
   } catch (err) {
     const errorMessage =
-      err instanceof Error ? err.message : 'Unexpected error occured!';
-    console.log('SIGNUP Error ->', err);
+      err instanceof Error ? err.message : "Unexpected error occured!";
+    console.log("AUTH_LOGIN Error ->", err);
 
     return NextResponse.json(
       { status: false, message: errorMessage },
