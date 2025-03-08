@@ -42,18 +42,19 @@ export async function sendResetVerificationEmail({
   try {
     // 1. Create a hashed token
     const hashedToken = await bcrypt.hash(userId, 10);
+    const tokenExpiry = Date.now() + 86400000; // 1 day;
 
     let fieldsToUpdate: any;
 
     if (emailType === AuthEmail.VerifyEmail)
       fieldsToUpdate = {
         verifyToken: hashedToken,
-        verifyTokenExpiry: Date.now() + 360000,
+        verifyTokenExpiry: tokenExpiry,
       };
     else if (emailType === AuthEmail.ResetPassword)
       fieldsToUpdate = {
         resetPasswordToken: hashedToken,
-        resetPasswordExpires: Date.now() + 360000,
+        resetPasswordExpires: tokenExpiry,
       };
     else
       throw new Error("No fallback case for specified email type, ", emailType);
@@ -64,7 +65,7 @@ export async function sendResetVerificationEmail({
       runValidators: true,
     }).select("-password -__v");
 
-    // Redirect URL
+    // Construct Redirect URL
     const URL = `${process.env.DOMAIN}/<URL>?token=${hashedToken}`;
     const redirectLink = URL.replace(
       "<URL>",
