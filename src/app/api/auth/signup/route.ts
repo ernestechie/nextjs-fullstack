@@ -1,4 +1,6 @@
+import { AuthEmail } from "@/constants/email";
 import { connect } from "@/db/db.config";
+import { sendResetVerificationEmail } from "@/lib/email";
 import UserModel from "@/models/UserModel";
 
 import bcryptjs from "bcryptjs";
@@ -32,6 +34,15 @@ export async function POST(req: NextRequest) {
     });
 
     const user = await newUser.save();
+
+    // 3. Send email verification link
+    await sendResetVerificationEmail({
+      userId: newUser.id,
+      recipients: [newUser.email],
+      subject: "Welcome to ChatFusion",
+      emailType: AuthEmail.VerifyEmail,
+      bodyText: `Hi, <b>${newUser.username}.</b><br/>ChatFusion is an advanced AI powered chat support and customer engagement startup.<br/><br/> Click the button below to verify your account.<br/>`,
+    });
 
     return NextResponse.json(
       {

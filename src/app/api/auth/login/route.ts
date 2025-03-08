@@ -1,4 +1,4 @@
-import { NEXT_COOKIE_KEY } from "@/constants/enum";
+import { NEXT_COOKIE_KEY } from "@/constants/auth";
 import { connect } from "@/db/db.config";
 import UserModel from "@/models/UserModel";
 

@@ -1,4 +1,4 @@
-import { NEXT_COOKIE_KEY } from "@/constants/enum";
+import { NEXT_COOKIE_KEY } from "@/constants/auth";
 import { NextResponse } from "next/server";
 
 export async function GET() {

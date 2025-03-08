@@ -2,7 +2,7 @@
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { MiddlewareFactory } from "./stackHandler";
 
-import { NEXT_COOKIE_KEY } from "@/constants/enum";
+import { NEXT_COOKIE_KEY } from "@/constants/auth";
 import { tokenHasExpired } from "@/lib/token";
 import { jwtDecode } from "jwt-decode";
 import validateRoute from "./validatePath";
