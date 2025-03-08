@@ -28,6 +28,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
 
+    user.isVerified = true;
     user.verifyToken = undefined;
     user.verifyTokenExpiry = undefined;
 
