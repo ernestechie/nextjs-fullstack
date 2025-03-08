@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { MiddlewareFactory } from "./stackHandler";
 
-import { NEXT_COOKIE_KEY } from "@/contants/enum";
+import { NEXT_COOKIE_KEY } from "@/constants/enum";
 import validateRoute from "./validatePath";
 
 const routes = ["/app/admin"];

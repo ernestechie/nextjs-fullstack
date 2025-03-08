@@ -14,7 +14,10 @@ export async function POST(req: NextRequest) {
     const userExists = await UserModel.findOne({ email });
     if (userExists)
       return NextResponse.json(
-        { status: false, message: "Email has already been used" },
+        {
+          status: false,
+          message: "An account with this email already exists!",
+        },
         { status: 400 }
       );
 
