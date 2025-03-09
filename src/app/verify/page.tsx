@@ -11,7 +11,7 @@ export default function VerificationPage() {
   const params = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [verified, setVerified] = useState(false);
 
   useEffect(() => {
     const token = params.get("token");
@@ -24,7 +24,7 @@ export default function VerificationPage() {
 
         setMessage(apiRes.data.message);
         const data = await apiRes.data;
-        if (data.status) setSuccess(true);
+        if (data.status) setVerified(true);
       } catch (err: any) {
         console.log(err);
         const error =
@@ -46,17 +46,17 @@ export default function VerificationPage() {
           <Loader />
         ) : (
           <div className="w-full text-2xl p-8 bg-gray-200 rounded-xl">
-            <p className="">{message}</p>
-
-            {success && (
-              <div className="mt-8">
-                <Link href="/app">
-                  <button type="button" className="btn">
-                    Go to dashboard
-                  </button>
-                </Link>
-              </div>
-            )}
+            <p>{message}</p>
+            <div className="mt-8">
+              <Link href={verified ? "/app" : "/signup"}>
+                <button
+                  type="button"
+                  className={`btn ${!verified && "bg-gray-600"}`}
+                >
+                  {verified ? "Go to dashboard" : "Create Account"}
+                </button>
+              </Link>
+            </div>
           </div>
         )}
       </div>

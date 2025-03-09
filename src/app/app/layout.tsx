@@ -14,7 +14,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         toast.success(res.data?.message);
         setTimeout(() => {
           window.location.href = "/login";
-        }, 2000);
+        }, 1000);
       })
       .catch((err) => throwAxiosError(err));
   };

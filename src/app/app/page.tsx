@@ -38,8 +38,6 @@ export default function MainAppPage() {
     getUserDetails().then((res) => {
       const user = res?.user;
       if (user) setUserData(user);
-
-      console.log("User -> ", user);
     });
   }, []);
 

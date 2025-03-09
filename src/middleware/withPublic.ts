@@ -7,7 +7,7 @@ import { tokenHasExpired } from "@/lib/token";
 import { jwtDecode } from "jwt-decode";
 import validateRoute from "./validatePath";
 
-const routes = ["/login", "/signup"];
+const routes = ["/login", "/signup", "/verify"];
 
 export const withPublic: MiddlewareFactory = (next) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {

@@ -82,13 +82,11 @@ export async function sendResetVerificationEmail({
     });
 
     if (recipients && recipients?.length) {
-      const email = await sendEmail({
+      await sendEmail({
         recipients,
         subject,
         html: template,
       });
-
-      console.log("Email -> ", email);
     }
   } catch (err) {
     console.log("sendVerificationEmail -> ", err);

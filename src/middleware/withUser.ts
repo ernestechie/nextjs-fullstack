@@ -25,9 +25,10 @@ export const withUser: MiddlewareFactory = (next) => {
       if (!token) return NextResponse.redirect(redirectUrl);
 
       const user: any = jwtDecode(token?.value || "");
+      console.log("User -> ", user);
       const tokenExpired = tokenHasExpired(user.exp);
 
-      if (tokenExpired) return NextResponse.redirect(redirectUrl);
+      if (!user || tokenExpired) return NextResponse.redirect(redirectUrl);
     }
 
     return next(request, _next);
