@@ -7,12 +7,12 @@ import { useRouter } from "next/navigation";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 
-export default function SignUpPage() {
+export default function LoginPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState({ email: "", password: "", username: "" });
+  const [user, setUser] = useState({ email: "", password: "" });
 
-  const { email, username, password } = user;
+  const { email, password } = user;
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) =>
     setUser((prev) => ({ ...prev, [e.target.id]: e.target.value }));
@@ -24,13 +24,13 @@ export default function SignUpPage() {
       setIsLoading(true);
 
       // Call signup endpoint
-      const response = await axios.post("/api/auth/signup", user);
+      const response = await axios.post("/api/auth/login", user);
       if (!response.status) console.error("Response -> ", response);
 
-      setUser({ email: "", password: "", username: "" });
+      setUser({ email: "", password: "" });
 
-      toast.success("Account Created Successfully!");
-      router.push("/login");
+      toast.success("Login Successful!");
+      router.push("/app");
     } catch (err) {
       console.log(err);
       throwAxiosError(err);
@@ -42,19 +42,9 @@ export default function SignUpPage() {
   return (
     <section className="p-2 py-16 min-h-screen">
       <div className="flex flex-col items-center justify-center w-full max-w-sm mx-auto">
-        <h1 className="mb-4 font-bold text-xl">Sign Up</h1>
+        <h1 className="mb-4 font-bold text-xl">Login</h1>
         <hr />
         <form className="w-full" onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={username}
-              onChange={handleInputChange}
-            />
-          </div>
           <div>
             <label htmlFor="email">Email</label>
             <input
@@ -78,11 +68,10 @@ export default function SignUpPage() {
           <button type="submit" disabled={isLoading}>
             {isLoading ? "Loading..." : "Submit"}
           </button>
-
           <div className="mt-4 flex items-center justify-end gap-2">
-            <span>Already have an account?</span>
-            <Link href="/login" className="font-medium text-blue-700">
-              Login
+            <span>Don`t have an account?</span>
+            <Link href="/auth/signup" className="font-medium text-blue-700">
+              Sign Up
             </Link>
           </div>
         </form>
