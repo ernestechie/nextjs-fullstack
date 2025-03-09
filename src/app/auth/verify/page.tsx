@@ -48,7 +48,7 @@ export default function VerificationPage() {
           <div className="w-full text-2xl p-8 bg-gray-200 rounded-xl">
             <p>{message}</p>
             <div className="mt-8">
-              <Link href={verified ? "/app" : "/signup"}>
+              <Link href={verified ? "/app" : "/auth/signup"}>
                 <button
                   type="button"
                   className={`btn ${!verified && "bg-gray-600"}`}

@@ -29,6 +29,8 @@ export default async function sendEmail({
     html,
   });
 
+  console.log("Mail -> ", mail);
+
   return mail;
 }
 
@@ -57,7 +59,9 @@ export async function sendResetVerificationEmail({
         resetPasswordExpires: tokenExpiry,
       };
     else
-      throw new Error("No fallback case for specified email type, ", emailType);
+      throw new Error(
+        `No fallback case for specified email type, ${emailType}`
+      );
 
     // 2. Update user object with hashed token
     await UserModel.findByIdAndUpdate(userId, fieldsToUpdate, {
@@ -66,7 +70,7 @@ export async function sendResetVerificationEmail({
     }).select("-password -__v");
 
     // Construct Redirect URL
-    const URL = `${process.env.DOMAIN}/<URL>?token=${hashedToken}`;
+    const URL = `${process.env.DOMAIN}/auth/<URL>?token=${hashedToken}`;
     const redirectLink = URL.replace(
       "<URL>",
       emailType === AuthEmail.ResetPassword ? "reset-password" : "verify"
@@ -88,6 +92,31 @@ export async function sendResetVerificationEmail({
         html: template,
       });
     }
+  } catch (err) {
+    console.log("sendVerificationEmail -> ", err);
+  }
+}
+
+export async function sendOtpEmail({
+  emailType,
+  subject,
+  recipients,
+  bodyText,
+}: AuthEmailProps) {
+  try {
+    if (!recipients?.length || emailType !== AuthEmail.OtpCode) return;
+
+    // Generate html template before sending to email function
+    const template = emailTemplate({
+      subject: subject || "ChatFusion V2.0",
+      bodyText,
+    });
+
+    await sendEmail({
+      recipients,
+      subject,
+      html: template,
+    });
   } catch (err) {
     console.log("sendVerificationEmail -> ", err);
   }

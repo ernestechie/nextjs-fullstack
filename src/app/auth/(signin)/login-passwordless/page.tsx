@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 
-export default function LoginPage() {
+export default function PasswordlessLoginPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState({ email: "", password: "" });
@@ -70,7 +70,7 @@ export default function LoginPage() {
           </button>
           <div className="mt-4 flex items-center justify-end gap-2">
             <span>Don`t have an account?</span>
-            <Link href="/signup" className="font-medium text-blue-700">
+            <Link href="/auth/signup" className="font-medium text-blue-700">
               Sign Up
             </Link>
           </div>

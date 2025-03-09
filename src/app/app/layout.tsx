@@ -13,7 +13,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       .then((res) => {
         toast.success(res.data?.message);
         setTimeout(() => {
-          window.location.href = "/login";
+          window.location.href = "/auth/login";
         }, 1000);
       })
       .catch((err) => throwAxiosError(err));

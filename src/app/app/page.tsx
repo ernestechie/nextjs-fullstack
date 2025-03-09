@@ -14,13 +14,12 @@ interface ApiUser {
 }
 
 export default function MainAppPage() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState<User | null>(null);
 
   useEffect(() => {
     async function getUserDetails() {
       try {
-        setIsLoading(true);
         const apiRes = await axios.get(`/api/auth/me`);
         const apiData: ApiUser = await apiRes?.data?.data;
         return apiData;
@@ -44,18 +43,15 @@ export default function MainAppPage() {
   return (
     <div className="p-8 rounded-xl bg-gray-100">
       {isLoading && <Loader />}
-      {!isLoading && (
-        <div>
-          {userData ? (
-            <p>
-              Welcome, <span className="font-bold">{userData.email}</span>
-            </p>
-          ) : (
-            <p className="text-2xl text-center text-gray-700">
-              Failed to fetch user details
-            </p>
-          )}
-        </div>
+      {!isLoading && userData && (
+        <p>
+          Welcome, <span className="font-bold">{userData.email}</span>
+        </p>
+      )}
+      {!isLoading && !userData && (
+        <p className="text-2xl text-center text-gray-700">
+          Failed to fetch user details
+        </p>
       )}
     </div>
   );
