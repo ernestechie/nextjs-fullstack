@@ -1,5 +1,6 @@
 import { connect } from "@/db/db.config";
-import getTokenData from "@/lib/api/getTokenData";
+// import { getUserFriendlyError } from "@/lib/api/error";
+import getTokenData from "@/lib/api/user/getTokenData";
 import UserModel from "@/models/UserModel";
 import UserModel2 from "@/models/UserModel2";
 import { NextRequest, NextResponse } from "next/server";

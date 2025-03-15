@@ -22,7 +22,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     <section className="p-16 mx-auto max-w-5xl">
       {children}
       <div className="mt-8">
-        <button className="btn bg-red-600" onClick={handleLogout}>
+        <button className="btn bg-red-500" onClick={handleLogout}>
           Logout
         </button>
       </div>

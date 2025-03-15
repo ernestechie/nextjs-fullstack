@@ -3,16 +3,18 @@ import { AuthEmail } from "@/constants/email";
 import { emailTemplate } from "@/html/verify-reset-email";
 import UserModel from "@/models/UserModel";
 import { AuthEmailProps, SendEmailProps } from "@/types/email";
-import bcrypt from "bcryptjs";
-import nodemailer from "nodemailer";
 
-const transporter = nodemailer.createTransport({
-  host: process.env.MAILTRAP_HOST,
+import bcrypt from "bcryptjs";
+import { createTransport } from "nodemailer";
+
+const transporter = createTransport({
+  service: "Gmail",
+  host: process.env.GMAIL_HOST,
   port: 587,
   secure: false, // true for port 465, false for other ports
   auth: {
-    user: process.env.MAILTRAP_USERNAME,
-    pass: process.env.MAILTRAP_PASSWORD,
+    user: process.env.GMAIL_USERNAME,
+    pass: process.env.GMAIL_PASSWORD,
   },
 });
 
@@ -23,7 +25,7 @@ export default async function sendEmail({
   html,
 }: SendEmailProps) {
   const mail = await transporter.sendMail({
-    from: '"Isaiah Ernest Ovie 👻" <isaiahernest081@gmail.com>',
+    from: `"ChatFusion" <${process.env.GMAIL_USERNAME}>`,
     to: recipients,
     subject: subject || "ChatFusion Fullstack",
     html,

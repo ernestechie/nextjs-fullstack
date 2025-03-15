@@ -10,10 +10,12 @@ connect();
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+
     const { email, password } = body;
 
     // 1: Check if user already exists
     const existingUser = await UserModel.findOne({ email });
+
     if (!existingUser)
       return NextResponse.json(
         { status: false, message: "Invalid email or password" },

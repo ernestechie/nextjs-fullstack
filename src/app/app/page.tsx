@@ -1,11 +1,10 @@
 import UserList from "@/components/UserList/UserList";
-import { getAllUsers, getMeDetails } from "@/lib/api/users";
+import { getMeDetails } from "@/lib/api/user/users";
+import React, { Suspense } from "react";
+import Loading from "./loading";
 
 export default async function MainAppPage() {
-  const meQuery = await getMeDetails();
-  const allUsersQuery = await getAllUsers();
-
-  const [meDetails, allUsers] = await Promise.all([meQuery, allUsersQuery]);
+  const meDetails = await getMeDetails();
 
   return (
     <div className="flex flex-col gap-y-4">
@@ -18,7 +17,9 @@ export default async function MainAppPage() {
       </div>
 
       {/* User List */}
-      <UserList users={allUsers} />
+      <Suspense fallback={<Loading />}>
+        <UserList />
+      </Suspense>
     </div>
   );
 }

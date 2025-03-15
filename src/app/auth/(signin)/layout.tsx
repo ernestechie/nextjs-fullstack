@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React from "react";
 
-export default function AuthSignupLayout({
+export default function AuthLoginLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -11,11 +11,11 @@ export default function AuthSignupLayout({
   return (
     <section className="p-16 mx-auto max-w-5xl">
       <div className="flex items-center justify-center gap-8 max-w-sm mx-auto">
-        <Link href="/auth/signup" className="btn bg-gray-500">
-          Credentials Signup
+        <Link href="/auth/login" className="btn bg-gray-500">
+          Credentials Login
         </Link>
-        <Link href="/auth/signup-passwordless" className="btn bg-gray-500">
-          Otp Signup
+        <Link href="/auth/login-passwordless" className="btn bg-gray-500">
+          OTP Login
         </Link>
       </div>
 

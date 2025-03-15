@@ -17,7 +17,7 @@ export default async function getTokenData(request: NextRequest) {
 
     return decodedTokenValue?.id;
   } catch (err) {
-    console.log(err);
+    console.log("getTokenData => ", err);
     return null;
   }
 }
