@@ -16,13 +16,14 @@ export const withAdmin: MiddlewareFactory = (next) => {
     if (correctRoute) {
       const token = request.cookies.get(NEXT_COOKIE_KEY);
 
-      let url: any = null;
+      let url = new URL("/app", request.url);
+
       if (!token) {
-        url = new URL(`/login`, request.url);
+        url = new URL(`/auth/login`, request.url);
       } else {
         const user: any = jwtDecode(token.value);
 
-        if (!user) url = new URL(`/login`, request.url);
+        if (!user) url = new URL(`/auth/login`, request.url);
         else if (user && !user.isAdmin) {
           url = new URL(`/app`, request.url);
         } else return;

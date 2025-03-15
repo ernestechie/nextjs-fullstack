@@ -20,11 +20,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   };
   return (
     <section className="p-16 mx-auto max-w-5xl">
-      <div className="py-8">{children}</div>
-
-      <button className="btn bg-red-600" onClick={handleLogout}>
-        Logout
-      </button>
+      {children}
+      <div className="mt-8">
+        <button className="btn bg-red-600" onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
     </section>
   );
 }

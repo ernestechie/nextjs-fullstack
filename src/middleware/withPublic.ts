@@ -14,8 +14,6 @@ export const withPublic: MiddlewareFactory = (next) => {
     const pathname = request.nextUrl.pathname;
     const correctRoute = validateRoute({ routes, pathname });
 
-    let url: any = null;
-
     if (correctRoute) {
       const token = request.cookies.get(NEXT_COOKIE_KEY);
       if (token) {
@@ -23,9 +21,9 @@ export const withPublic: MiddlewareFactory = (next) => {
         const tokenExpired = tokenHasExpired(user.exp);
 
         if (!tokenExpired) {
-          url = new URL(`/app`, request.url);
+          const url = new URL(`/app`, request.url);
+          return NextResponse.redirect(url);
         }
-        return NextResponse.redirect(url);
       }
     }
     return next(request, _next);

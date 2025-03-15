@@ -1,5 +1,4 @@
 "use client";
-
 import { LS_CHATFUSION_USER } from "@/constants/auth";
 import { throwAxiosError } from "@/helpers/toast";
 import axios from "axios";

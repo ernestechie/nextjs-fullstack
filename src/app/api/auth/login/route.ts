@@ -63,6 +63,7 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (err) {
+    console.log(err);
     const errorMessage =
       err instanceof Error ? err.message : "Unexpected error occured!";
     console.log("AUTH_LOGIN Error ->", err);

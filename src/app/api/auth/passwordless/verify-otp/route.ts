@@ -12,8 +12,6 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { email, otp } = body;
 
-    console.log(body);
-
     // 1: Check if user already exists
     const existingUser = await UserModel2.findOne({ email }).select("-__v");
     if (!existingUser) throw new Error("User does not exist");
@@ -21,13 +19,6 @@ export async function POST(req: NextRequest) {
     // 2. Check if otp is correct
     const otpIsValid = await bcryptjs.compare(otp, existingUser.otpCode);
     const otpExpired = existingUser.otpCodeExpiry < Date.now();
-
-    console.log(existingUser);
-
-    console.log({
-      otpIsValid,
-      otpExpired,
-    });
 
     if (!otpIsValid || otpExpired) throw new Error("Invalid OTP");
 
