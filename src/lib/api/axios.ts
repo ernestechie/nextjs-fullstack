@@ -1,8 +1,8 @@
 import { NEXT_COOKIE_KEY } from "@/constants/auth";
 import axios from "axios";
-import { cookies } from "next/headers";
+import Cookies from "universal-cookie";
 
-const baseURL = process.env.API_BASE_URL;
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const isServer = typeof window === "undefined";
 
 const httpClient = axios.create({
@@ -15,12 +15,18 @@ const httpClient = axios.create({
 httpClient.interceptors.request.use(async (config) => {
   let token;
   if (isServer) {
+    const { cookies } = await import("next/headers");
+
     const cookieStore = await cookies();
     token = cookieStore.get(NEXT_COOKIE_KEY)?.value || "";
-
     config.headers["Authorization"] = token;
   } else {
-    token = localStorage.getItem(NEXT_COOKIE_KEY) || "";
+    const cookies = new Cookies();
+    const token =
+      cookies.get(NEXT_COOKIE_KEY) ||
+      localStorage.getItem(NEXT_COOKIE_KEY) ||
+      "";
+
     config.headers["Authorization"] = token;
   }
 

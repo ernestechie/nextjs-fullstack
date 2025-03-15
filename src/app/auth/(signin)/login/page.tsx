@@ -1,7 +1,8 @@
 "use client";
 
 import { throwAxiosError } from "@/helpers/toast";
-import axios from "axios";
+import httpClient from "@/lib/api/axios";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { ChangeEvent, FormEvent, useState } from "react";
@@ -24,7 +25,8 @@ export default function LoginPage() {
       setIsLoading(true);
 
       // Call signup endpoint
-      const response = await axios.post("/api/auth/login", user);
+      const response = await httpClient.post("/auth/login", user);
+      console.log(response);
       if (!response.status) console.error("Response -> ", response);
 
       setUser({ email: "", password: "" });
@@ -42,7 +44,7 @@ export default function LoginPage() {
   return (
     <section className="p-2 py-16 min-h-screen">
       <div className="flex flex-col items-center justify-center w-full max-w-sm mx-auto">
-        <h1 className="mb-4 font-bold text-xl">Login</h1>
+        <h1 className="mb-4 font-bold text-xl">Login with Email & Password</h1>
         <hr />
         <form className="w-full" onSubmit={handleSubmit}>
           <div>

@@ -1,21 +1,16 @@
 "use client";
 
 import { throwAxiosError } from "@/helpers/toast";
-import axios from "axios";
+import httpClient from "@/lib/api/axios";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { ChangeEvent, FormEvent, useState } from "react";
-import toast from "react-hot-toast";
+import React, { FormEvent, useState } from "react";
 
 export default function PasswordlessLoginPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState({ email: "", password: "" });
-
-  const { email, password } = user;
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) =>
-    setUser((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+  const [email, setEmail] = useState("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,14 +18,15 @@ export default function PasswordlessLoginPage() {
     try {
       setIsLoading(true);
 
-      // Call signup endpoint
-      const response = await axios.post("/api/auth/login", user);
+      // Call signin endpoint
+      const response = await httpClient.post("/auth/passwordless/login", {
+        email,
+      });
       if (!response.status) console.error("Response -> ", response);
 
-      setUser({ email: "", password: "" });
+      setEmail("");
 
-      toast.success("Login Successful!");
-      router.push("/app");
+      router.push("/auth/verify-otp");
     } catch (err) {
       console.log(err);
       throwAxiosError(err);
@@ -42,7 +38,7 @@ export default function PasswordlessLoginPage() {
   return (
     <section className="p-2 py-16 min-h-screen">
       <div className="flex flex-col items-center justify-center w-full max-w-sm mx-auto">
-        <h1 className="mb-4 font-bold text-xl">Login</h1>
+        <h1 className="mb-4 font-bold text-xl">OTP Login</h1>
         <hr />
         <form className="w-full" onSubmit={handleSubmit}>
           <div>
@@ -52,20 +48,10 @@ export default function PasswordlessLoginPage() {
               id="email"
               name="email"
               value={email}
-              onChange={handleInputChange}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div>
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={password}
-              onChange={handleInputChange}
-            />
-          </div>
-          <button type="submit" disabled={isLoading}>
+          <button type="submit" title="Login Button" disabled={isLoading}>
             {isLoading ? "Loading..." : "Submit"}
           </button>
           <div className="mt-4 flex items-center justify-end gap-2">

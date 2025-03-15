@@ -1,5 +1,7 @@
 import { connect } from "@/db/db.config";
-import getTokenData from "@/lib/api/getTokenData";
+import { getUserFriendlyError } from "@/lib/api/error";
+
+import getTokenData from "@/lib/api/user/getTokenData";
 import UserModel from "@/models/UserModel";
 import UserModel2 from "@/models/UserModel2";
 
@@ -36,9 +38,9 @@ export async function GET(req: NextRequest) {
 
     return response;
   } catch (err) {
-    const errorMessage =
-      err instanceof Error ? err.message : "Unexpected error occured!";
-    console.log("API_USERS Error ->", err);
+    const errorMessage = getUserFriendlyError(err);
+
+    console.log("API_USERS Error ->", errorMessage);
 
     return NextResponse.json(
       { status: false, message: errorMessage },
