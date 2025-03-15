@@ -18,17 +18,15 @@ export const withUser: MiddlewareFactory = (next) => {
     const pathname = request.nextUrl.pathname;
     const correctRoute = validateRoute({ routes, pathname });
 
-    const redirectUrl = new URL(`/login`, request.url);
+    const url = new URL("/auth/login", request.url);
     if (correctRoute) {
       const token = request.cookies.get(NEXT_COOKIE_KEY);
-
-      if (!token) return NextResponse.redirect(redirectUrl);
+      if (!token) return NextResponse.redirect(url);
 
       const user: any = jwtDecode(token?.value || "");
-      console.log("User -> ", user);
       const tokenExpired = tokenHasExpired(user.exp);
 
-      if (!user || tokenExpired) return NextResponse.redirect(redirectUrl);
+      if (!user || tokenExpired) return NextResponse.redirect(url);
     }
 
     return next(request, _next);
