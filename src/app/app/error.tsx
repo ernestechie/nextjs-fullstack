@@ -14,7 +14,7 @@ export default function Error(props: ErrorProps) {
 
   useEffect(() => {
     if (error) {
-      console.log("ERROR_BOUNDARY -> ", error);
+      console.log("ERROR_BOUNDARY -> ", error.message);
       setGeneratedError(error.message);
     }
   }, [error]);
