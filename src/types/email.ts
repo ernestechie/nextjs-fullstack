@@ -11,4 +11,5 @@ export interface AuthEmailProps extends Partial<SendEmailProps> {
   emailType: AuthEmail;
   bodyText: string;
   userId: string;
+  value: string;
 }

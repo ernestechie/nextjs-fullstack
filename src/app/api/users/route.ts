@@ -5,7 +5,7 @@ import getTokenData from "@/lib/api/user/getTokenData";
 import UserModel from "@/models/UserModel";
 import UserModel2 from "@/models/UserModel2";
 
-import catchErrorsAsync from "@/lib/api/error-wrapper";
+import catchErrorsAsync from "@/lib/api/error/error-wrapper";
 import AppError from "@/modules/AppError";
 
 connect();

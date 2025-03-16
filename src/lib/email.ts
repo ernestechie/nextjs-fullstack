@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AuthEmail } from "@/constants/email";
-import { emailTemplate } from "@/html/verify-reset-email";
+import { buttonLinkEmailTemplate } from "@/html/button-link-email";
+import { otpEmailTemplate } from "@/html/otp-email";
 import UserModel from "@/models/UserModel";
 import { AuthEmailProps, SendEmailProps } from "@/types/email";
 
@@ -42,12 +43,14 @@ export async function sendResetVerificationEmail({
   subject,
   recipients,
   bodyText,
+  value,
 }: AuthEmailProps) {
   try {
     // 1. Create a hashed token
     const hashedToken = await bcrypt.hash(userId, 10);
     const tokenExpiry = Date.now() + 86400000; // 1 day;
 
+    let template;
     let fieldsToUpdate: any;
 
     if (emailType === AuthEmail.VerifyEmail)
@@ -79,13 +82,20 @@ export async function sendResetVerificationEmail({
     );
 
     // Generate html template before sending to email function
-    const template = emailTemplate({
-      subject: subject || "ChatFusion V2.0",
-      bodyText,
-      link: redirectLink,
-      buttonText:
-        emailType === AuthEmail.VerifyEmail ? "Verify Email" : "Reset Password",
-    });
+    if (emailType === AuthEmail.VerifyEmail)
+      template = buttonLinkEmailTemplate({
+        subject: subject || "ChatFusion V2.0",
+        bodyText,
+        link: redirectLink,
+        buttonText: "Verify Email",
+      });
+    else if (emailType === AuthEmail.ResetPassword)
+      template = otpEmailTemplate({
+        subject: subject || "ChatFusion V2.0",
+        bodyText,
+        link: redirectLink,
+        value,
+      });
 
     if (recipients && recipients?.length) {
       await sendEmail({
@@ -104,14 +114,16 @@ export async function sendOtpEmail({
   subject,
   recipients,
   bodyText,
+  value,
 }: AuthEmailProps) {
   try {
     if (!recipients?.length || emailType !== AuthEmail.OtpCode) return;
 
     // Generate html template before sending to email function
-    const template = emailTemplate({
+    const template = otpEmailTemplate({
       subject: subject || "ChatFusion V2.0",
       bodyText,
+      value,
     });
 
     await sendEmail({

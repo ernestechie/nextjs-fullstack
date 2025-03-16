@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
       subject: "Welcome to ChatFusion",
       emailType: AuthEmail.VerifyEmail,
       bodyText: `Hi, <b>${newUser.username}.</b><br/>ChatFusion is an advanced AI powered chat support and customer engagement startup.<br/><br/> Click the button below to verify your account.<br/>`,
+      value: "",
     });
 
     return NextResponse.json(

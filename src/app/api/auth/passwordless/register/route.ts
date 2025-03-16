@@ -44,9 +44,7 @@ export async function POST(req: NextRequest) {
 
     const bodyText = `
       Hi, <b>${newUser.username}.</b><br/>
-      Kindly use this code to complete your registration on ChatFusion.<br/><br/>
-      <span style="padding:16px;color: #111; font-size: 24px; background: #ddd; border-radius: 20px; display:block;">
-      ${otpCode}
+      Kindly use this code to complete your registration on ChatFusion.<br/>
       </span>
     `;
 
@@ -57,6 +55,7 @@ export async function POST(req: NextRequest) {
       subject: "Welcome to ChatFusion",
       emailType: AuthEmail.OtpCode,
       bodyText,
+      value: otpCode,
     });
 
     return NextResponse.json(
